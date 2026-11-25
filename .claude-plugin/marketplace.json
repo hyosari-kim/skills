@@ -1,0 +1,14 @@
+{
+  "name": "hyosari-skills",
+  "description": "현이의 개인 Claude Code 플러그인 마켓플레이스",
+  "owner": {
+    "name": "hyoeun Kim"
+  },
+  "plugins": [
+    {
+      "name": "hstack",
+      "source": "./plugins/hstack",
+      "description": "현이의 에이전트 작업 방식. /hstack:hyosari-mode 라우터, 플레이북 18개, 하위 스킬, 원칙 25개."
+    }
+  ]
+}

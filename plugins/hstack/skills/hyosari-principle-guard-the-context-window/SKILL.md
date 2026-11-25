@@ -1,0 +1,12 @@
+---
+name: hyosari-principle-guard-the-context-window
+description: 컨텍스트가 차오를 때(큰 출력, 긴 파일, 반복 읽기, fan-out 계획) 쓰는 원칙. 대량 작업은 서브에이전트로 보내고, 메인 스레드에는 원본 내용이 아니라 요약을 둔다. /hstack:hyosari-principle-guard-the-context-window 로 호출하거나 hyosari-mode가 가리킬 때 쓴다.
+disable-model-invocation: true
+---
+
+# Guard the Context Window
+
+**이유:** 컨텍스트가 넘치면 추론 품질이 떨어지고, 압축으로 인한 손실이 생기고, 진행이 멈춘다.
+
+**패턴:**
+- **단계 크기를 정하고 범위에 상한을 둔다.** 단계마다 파일 수를 제한하고, 턴 예산을 정하고, 각 방법이 쓰는 비용을 따진다.
