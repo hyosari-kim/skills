@@ -1,0 +1,15 @@
+{
+  "name": "hstack",
+  "version": "0.1.0",
+  "description": "현이의 에이전트 작업 방식. /hstack:hyosari-mode 라우터가 작업을 플레이북에 매칭하고, 하위 스킬과 원칙을 경로로 읽어 쓴다. cursor/plugins의 pstack(poteto-mode)을 Claude Code용으로 옮겼다.",
+  "author": {
+    "name": "hyoeun Kim"
+  },
+  "repository": "https://github.com/hyosari-kim/skills",
+  "keywords": [
+    "workflow",
+    "playbooks",
+    "principles",
+    "subagents"
+  ]
+}
