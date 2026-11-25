@@ -10,11 +10,11 @@ disable-model-invocation: true
 
 하위 스킬은 이 파일 기준 `../<이름>/SKILL.md`에 있다. 그래서 `hyosari-agent`를 띄울 때마다 이 파일의 절대 경로를 프롬프트에 넣는다.
 
-**우선순위.** 사용자의 직접 지시와 프로젝트 `CLAUDE.md`가 이 파일보다 우선한다. 이 모드가 로드된 세션에서는 이 파일, 플레이북, `hyosari-*` 하위 스킬이 다른 프로세스 스킬(예: superpowers의 brainstorming, writing-plans, test-driven-development)보다 우선한다. 같은 단계를 다루는 다른 프로세스 스킬은 부르지 않는다. 플레이북이 다루지 않는 일에 맞는 스킬이 있으면 그 스킬은 쓴다.
+**우선순위.** 사용자의 직접 지시와 프로젝트 `CLAUDE.md`가 이 파일보다 우선한다. 이 모드가 로드된 세션에서는 이 파일, 플레이북, hstack 하위 스킬이 다른 프로세스 스킬(예: superpowers의 brainstorming, writing-plans, test-driven-development)보다 우선한다. 같은 단계를 다루는 다른 프로세스 스킬은 부르지 않는다. 플레이북이 다루지 않는 일에 맞는 스킬이 있으면 그 스킬은 쓴다.
 
 ## Non-negotiables
 
-아래 Principles가 모든 트리거의 근거다. 답변에는 결정을 바꾼 원칙의 이름과 그것이 바꾼 구체적인 선택을 적는다. 이번 세션에 전문(`hyosari-principle-*` SKILL.md)을 읽은 원칙만 인용한다.
+아래 Principles가 모든 트리거의 근거다. 답변에는 결정을 바꾼 원칙의 이름과 그것이 바꾼 구체적인 선택을 적는다. 이번 세션에 전문(`principle-*` SKILL.md)을 읽은 원칙만 인용한다.
 
 "상황 → 행동" 형태의 트리거다. 코드를 읽거나 쓰기 전에 해당 줄이 있는지 먼저 본다.
 
@@ -22,22 +22,22 @@ disable-model-invocation: true
 - 에이전트를 띄움(`Agent` 서브에이전트든 별도 세션 워커든) → 킥오프 첫 줄은 항상 `Read <path>/worker.md before anything else.`이고, `<path>`는 이 스킬 폴더의 절대 경로(hstack 플러그인 설치 경로 아래 `skills/hyosari-mode`, 예: `~/.claude/plugins/cache/hyosari-skills/hstack/<version>/skills/hyosari-mode`)다. 작업 규칙은 슬래시 커맨드로만 로드되는 스킬에 있어서 다른 방법으로는 다른 에이전트에 전달되지 않는다. `hyosari-agent`가 아닌 워커에게는 라우터인 이 파일을 직접 읽게 하지 않는다. 킥오프의 나머지는 목표와 작업만 적는다. `hyosari-agent`에는 이 파일의 절대 경로도 넣는다.
 - 실행해 보면 갈리는 선택지 → 묻지 않고 `playbooks/prototype.md`대로 프로토타입을 만들어 확인한다.
 - 확인하면 풀리는 질문 → 묻지 않는다. 실행하고, 읽고, 직접 돌려서 확인한다.
-- 코드를 쓰기 전 → 데이터 형태부터 정한다. 타입, 관계, 상태값, 저장 구조를 먼저 적고 로직은 그다음이다. 함수나 모듈 경계를 넘음 → **hyosari-architect**. 호출하는 쪽이 어떻게 쓰게 될지부터 적고 시그니처를 정한다. 병렬로 펼침 → **hyosari-swarm**. 여러 안을 겨룸 → **hyosari-arena**. 논쟁적인 설계 → **hyosari-interrogate**.
+- 코드를 쓰기 전 → 데이터 형태부터 정한다. 타입, 관계, 상태값, 저장 구조를 먼저 적고 로직은 그다음이다. 함수나 모듈 경계를 넘음 → **architect**. 호출하는 쪽이 어떻게 쓰게 될지부터 적고 시그니처를 정한다. 병렬로 펼침 → **swarm**. 여러 안을 겨룸 → **arena**. 논쟁적인 설계 → **interrogate**.
 - 저장된 데이터나 스키마를 바꿈, 백필, 배포 → 되돌릴 방법과 기존 데이터에 미치는 영향을 먼저 확인한다. 작업은 **Sequence Work into Verifiable Units**대로 나누고, 상태를 바꾸는 단계는 **Make Operations Idempotent**대로 다시 돌려도 같은 결과가 나오게 한다.
-- 문장(답변 포함) → **hyosari-unslop**. 문서, PR 설명, 커밋 메시지 → **hyosari-technical-writing**.
-- 커밋 전 → Claude Code `simplify` 스킬. 리뷰 전 → **hyosari-no-comments**. PR을 열기 전 → Claude Code `code-review` 스킬.
-- UI, IDE, CLI를 내보내기 전 → **hyosari-control-ui** 또는 **hyosari-control-cli**로 사용자처럼 직접 돌려 본다.
+- 문장(답변 포함) → **unslop**. 문서, PR 설명, 커밋 메시지 → **technical-writing**.
+- 커밋 전 → Claude Code `simplify` 스킬. 리뷰 전 → **no-comments**. PR을 열기 전 → Claude Code `code-review` 스킬.
+- UI, IDE, CLI를 내보내기 전 → **control-ui** 또는 **control-cli**로 사용자처럼 직접 돌려 본다.
 - 완료 선언 전 → **Prove It Works**. 실제 실행 결과를 붙인다. "빌드된다"나 "테스트 파일을 추가했다"는 증거가 아니다.
 - 같은 수정이 두 번 실패 → **Attack the Premise**. 두 수정이 공유하는 전제를 적어두고 그 전제부터 직접 검증한다.
-- 측정한 숫자 → **hyosari-explain-the-number**. 무엇이 그 숫자를 결정하는지, 엉뚱한 것을 재지 않았는지 먼저 확인하고 보고한다.
+- 측정한 숫자 → **explain-the-number**. 무엇이 그 숫자를 결정하는지, 엉뚱한 것을 재지 않았는지 먼저 확인하고 보고한다.
 - 봇 리뷰 코멘트 → 하나씩 그 내용이 맞는지 따져서 판단한다. 답글은 **pr-reply** 절차로 단다.
-- 길거나 지켜보는 사람이 없는 작업 → **hyosari-show-me-your-work**.
+- 길거나 지켜보는 사람이 없는 작업 → **show-me-your-work**.
 - 특정 스택의 코드를 다룸 → 그 스택용 스킬이 있으면 먼저 읽는다. 없으면 프로젝트의 `CLAUDE.md`와 기존 코드의 컨벤션을 따른다. 새 도구나 방식을 들이지 않는다.
 - 테스트를 쓰거나 고침 → 사용자에게 보이는 동작을 검증한다. 구현 세부는 검증하지 않는다.
 
 ## Principles
 
-각 원칙의 전문은 하위 스킬 `hyosari-principle-<kebab-title>`이다. 제목을 kebab-case로 바꾸고, 하이픈은 남기고, 다른 문장부호는 뺀다. 항목이 이름을 따로 적었으면 그 이름이다(읽는 법은 아래 **Skills**). 원칙을 적용하기 전에 전문을 끝까지 읽는다. 각 항목은 언제 적용하는지를 적는다.
+각 원칙의 전문은 하위 스킬 `principle-<kebab-title>`이다. 제목을 kebab-case로 바꾸고, 하이픈은 남기고, 다른 문장부호는 뺀다. 항목이 이름을 따로 적었으면 그 이름이다(읽는 법은 아래 **Skills**). 원칙을 적용하기 전에 전문을 끝까지 읽는다. 각 항목은 언제 적용하는지를 적는다.
 
 **Core**
 
@@ -66,7 +66,7 @@ disable-model-invocation: true
 
 - **Prove It Works.** 작업이 끝나고 완료를 선언하기 전. 대리 지표나 "컴파일된다"가 아니라 실제 산출물로 검증한다.
 - **Fix Root Causes.** 디버깅할 때. 증상을 처음 시스템이 틀어진 지점까지 거슬러 올라가 거기서 고친다. 방어 코드는 그 상태가 정상일 때만 수정이다.
-- **Sequence Work into Verifiable Units** (**hyosari-principle-sequence-verifiable-units**). 여러 단계의 작업(일괄 수정, 마이그레이션, 비슷한 수정의 연속)과 커밋·PR을 쌓는 방식. 각각 확인으로 끝나는 작은 단위로 나누고, 다음으로 가기 전에 검증하고, 순서 자체가 스스로를 증명하게 내보낸다.
+- **Sequence Work into Verifiable Units** (**principle-sequence-verifiable-units**). 여러 단계의 작업(일괄 수정, 마이그레이션, 비슷한 수정의 연속)과 커밋·PR을 쌓는 방식. 각각 확인으로 끝나는 작은 단위로 나누고, 다음으로 가기 전에 검증하고, 순서 자체가 스스로를 증명하게 내보낸다.
 - **Test Behavior, Not Implementation.** 테스트를 쓰거나, 바꾸거나, 남길지 정할 때. 코드를 쓰는 쪽이 관찰할 수 있는 것을 검증해서, 그 동작이 깨지면 실패하고 내부만 바뀌면 계속 통과하게 한다.
 - **Explain the Number.** 측정하기 전, 그리고 측정한 숫자(속도 개선, 회귀, 처리량, 지연, 평가 결과)를 믿거나 보고하거나 그것으로 행동하기 전. 무엇이 그 숫자를 제한하는지 찾고, 생각하는 작업이 아닌 다른 것을 재지 않았는지 배제한다.
 
@@ -83,43 +83,43 @@ disable-model-invocation: true
 
 플레이북 단계와 트리거가 이름으로 가리키는 하위 스킬이다. 사용자도 각 스킬을 `/hstack:<이름>`으로 따로 부를 수 있다.
 
-**읽는 법.** "**hyosari-x**를 쓴다"는 이 폴더 옆의 `../hyosari-x/SKILL.md`를 끝까지 읽고 그 절차를 따른다는 뜻이다. 하위 스킬은 슬래시 전용(`disable-model-invocation: true`)이라 Skill 도구로는 부를 수 없다. 경로로 읽는다. 파일이 없으면 이 파일과 플레이북의 문장만으로 진행하고 그 사실을 적는다.
+**읽는 법.** "**x**를 쓴다"는 이 폴더 옆의 `../x/SKILL.md`를 끝까지 읽고 그 절차를 따른다는 뜻이다. 하위 스킬은 슬래시 전용(`disable-model-invocation: true`)이라 Skill 도구로는 부를 수 없다. 경로로 읽는다. 파일이 없으면 이 파일과 플레이북의 문장만으로 진행하고 그 사실을 적는다.
 
 **설계와 구현**
-- **hyosari-architect.** 함수나 모듈 경계를 넘는 코드를 쓰기 전. 호출하는 쪽, 타입, 시그니처, 모듈 경계를 먼저 정한다.
-- **hyosari-tdd.** 버그 수정에 싼 로컬 테스트 경로가 있을 때. 실패하는 테스트를 먼저 쓰고 통과를 보인다.
-- **hyosari-interrogate.** 설계가 논쟁적일 때. 구현 설명을 받지 않은 리뷰어가 깨보고, 실행으로 증명된 지적만 남긴다.
-- **hyosari-swarm.** 병렬 워커 N개를 펼치고, 모두 거둬서 보고서 하나로 돌려준다. 병렬 커버리지, 경쟁 조건, 관문 통과, 탐색.
-- **hyosari-arena.** 같은 작업에 후보 N개를 동시에 돌리고, 바탕 하나를 골라 진 후보의 좋은 부분을 이식한다.
-- **hyosari-figure-it-out.** 맞는 플레이북이 없을 때. 큰 마이그레이션, 여러 부분으로 된 야심 찬 변경, 사람이 자리를 비운 뒤 리뷰할 작업에 감사 가능한 플레이북을 설계한다.
+- **architect.** 함수나 모듈 경계를 넘는 코드를 쓰기 전. 호출하는 쪽, 타입, 시그니처, 모듈 경계를 먼저 정한다.
+- **tdd.** 버그 수정에 싼 로컬 테스트 경로가 있을 때. 실패하는 테스트를 먼저 쓰고 통과를 보인다.
+- **interrogate.** 설계가 논쟁적일 때. 구현 설명을 받지 않은 리뷰어가 깨보고, 실행으로 증명된 지적만 남긴다.
+- **swarm.** 병렬 워커 N개를 펼치고, 모두 거둬서 보고서 하나로 돌려준다. 병렬 커버리지, 경쟁 조건, 관문 통과, 탐색.
+- **arena.** 같은 작업에 후보 N개를 동시에 돌리고, 바탕 하나를 골라 진 후보의 좋은 부분을 이식한다.
+- **figure-it-out.** 맞는 플레이북이 없을 때. 큰 마이그레이션, 여러 부분으로 된 야심 찬 변경, 사람이 자리를 비운 뒤 리뷰할 작업에 감사 가능한 플레이북을 설계한다.
 
 **조사**
-- **hyosari-how.** 지금 코드가 어떻게 동작하는지, 어디에 있어야 하는지 물을 때와 고치기 전. 실행 흐름과 구조를 설명한다.
-- **hyosari-why.** 왜 그렇게 만들었는지, 언제부터 깨졌는지 물을 때. 커밋, PR, 이슈 기록으로 답한다.
-- **hyosari-in-your-own-words.** 사용자의 목표와 풀려는 문제를 내 말로 다시 말한다.
+- **how.** 지금 코드가 어떻게 동작하는지, 어디에 있어야 하는지 물을 때와 고치기 전. 실행 흐름과 구조를 설명한다.
+- **why.** 왜 그렇게 만들었는지, 언제부터 깨졌는지 물을 때. 커밋, PR, 이슈 기록으로 답한다.
+- **in-your-own-words.** 사용자의 목표와 풀려는 문제를 내 말로 다시 말한다.
 
 **검증과 정리**
-- **hyosari-explain-the-number.** 숫자를 보고하거나 숫자로 결정하기 전. 무엇을 쟀는지 점검한다.
-- **hyosari-control-ui.** 웹, IDE, Electron UI를 실제 브라우저로 움직이며 확인한다.
-- **hyosari-control-cli.** 대화형 CLI나 TUI를 tmux 같은 하네스로 움직이며 확인한다.
-- **hyosari-no-comments.** 리뷰 전. `hyosari-comment-sicko` 에이전트로 주석을 걷어내고, 받아들인 지적을 고친다.
+- **explain-the-number.** 숫자를 보고하거나 숫자로 결정하기 전. 무엇을 쟀는지 점검한다.
+- **control-ui.** 웹, IDE, Electron UI를 실제 브라우저로 움직이며 확인한다.
+- **control-cli.** 대화형 CLI나 TUI를 tmux 같은 하네스로 움직이며 확인한다.
+- **no-comments.** 리뷰 전. `comment-sicko` 에이전트로 주석을 걷어내고, 받아들인 지적을 고친다.
 
 **글쓰기와 기록**
-- **hyosari-unslop.** 모든 글에서 AI 티를 걷어낸다.
-- **hyosari-technical-writing.** 문서, PR 설명, 커밋 메시지의 작성 기준.
-- **hyosari-show-me-your-work.** 길거나 지켜보는 사람이 없는 작업의 결정 기록을 남긴다.
+- **unslop.** 모든 글에서 AI 티를 걷어낸다.
+- **technical-writing.** 문서, PR 설명, 커밋 메시지의 작성 기준.
+- **show-me-your-work.** 길거나 지켜보는 사람이 없는 작업의 결정 기록을 남긴다.
 
 **Claude Code 스킬**
 
-hyosari 밖의 스킬이다. 같은 단계를 다루는 hyosari 스킬이 없어서 함께 쓴다.
+hstack 밖의 스킬이다. 같은 단계를 다루는 hstack 스킬이 없어서 함께 쓴다.
 
 - **`simplify`** (Claude Code 내장). 커밋 전. 바뀐 코드의 재사용, 단순화, 효율, 추상화 수준을 점검하고 바로 고친다. Skill 도구로 부른다.
 - **`code-review`** (Claude Code 내장). PR을 열기 전. diff의 정확성 버그를 찾는다. Skill 도구로 부르고, 수준은 `medium`을 기본으로 한다. `max`와 `ultra`는 사용자가 요청할 때만 쓴다.
-- **`run`** (Claude Code 내장). 앱을 어떻게 띄우는지 모를 때. **hyosari-control-ui**와 **hyosari-control-cli**가 확인을 시작하기 전에 쓴다. Skill 도구로 부른다.
+- **`run`** (Claude Code 내장). 앱을 어떻게 띄우는지 모를 때. **control-ui**와 **control-cli**가 확인을 시작하기 전에 쓴다. Skill 도구로 부른다.
 - **pr-reply.** PR의 미해결 리뷰 코멘트에 답글을 단다. 코드는 고치지 않는다. 슬래시 전용이라 `../pr-reply/SKILL.md`를 경로로 읽는다.
 
 **원칙**
-- **hyosari-principle-\*.** 위 Principles의 전문 25개.
+- **principle-\*.** 위 Principles의 전문 25개.
 
 ## Autonomy
 
@@ -135,7 +135,7 @@ hyosari 밖의 스킬이다. 같은 단계를 다루는 hyosari 스킬이 없어
 
 ## Subagents
 
-**플레이북 단계 안에서 직접 띄우는 서브에이전트는 `subagent_type: "hstack:hyosari-agent"`를 쓴다.** `/hstack:hyosari-mode`를 받은 대화가 플레이북을 직접 실행한다. 경로로 읽는 워크플로 스킬(`hyosari-interrogate`, `hyosari-swarm`, `hyosari-arena`)이 자기 `subagent_type`을 정하면 그것을 따른다.
+**플레이북 단계 안에서 직접 띄우는 서브에이전트는 `subagent_type: "hstack:hyosari-agent"`를 쓴다.** `/hstack:hyosari-mode`를 받은 대화가 플레이북을 직접 실행한다. 경로로 읽는 워크플로 스킬(`interrogate`, `swarm`, `arena`)이 자기 `subagent_type`을 정하면 그것을 따른다.
 
 **모든 `Agent` 호출의 기본값.** 맥락은 인라인 대신 파일 경로로 가리킨다. 역할마다 `model`과 `effort`를 명시한다. 별도 세션 워커도 같다. 서브에이전트는 기본으로 백그라운드에서 돌고 끝나면 알려준다. 플레이북 단계 안의 일은 읽기만 하는 작업도 `hyosari-agent`로 띄우고 브리프에 "파일을 고치지 않는다"를 적는다. 플레이북 밖의 단순 검색만 `Explore`로 띄운다. 어느 쪽이든 끝나고 `git status`로 바뀐 파일이 없는지 확인한다. 격리가 필요한 작업은 `isolation: "worktree"`를 쓴다. 역할별 기본값은 아래와 같다.
 
@@ -159,7 +159,7 @@ hyosari 밖의 스킬이다. 같은 단계를 다루는 hyosari 스킬이 없어
 
 ## Playbooks
 
-작업을 플레이북 하나에 매칭하고, `playbooks/<title>.md`(title은 kebab-case)를 열고, 그 단계를 할 일 목록에 먼저 복사한다. 건너뛴 단계는 목록에 남기고 사유를 한 줄 적는다. 크거나, 여러 영역에 걸치거나, 지켜보는 사람 없이 도는 작업, 그리고 어떤 플레이북에도 맞지 않는 작업은 **hyosari-figure-it-out**으로 보낸다.
+작업을 플레이북 하나에 매칭하고, `playbooks/<title>.md`(title은 kebab-case)를 열고, 그 단계를 할 일 목록에 먼저 복사한다. 건너뛴 단계는 목록에 남기고 사유를 한 줄 적는다. 크거나, 여러 영역에 걸치거나, 지켜보는 사람 없이 도는 작업, 그리고 어떤 플레이북에도 맞지 않는 작업은 **figure-it-out**으로 보낸다.
 
 **작은 변경은 플레이북 없이 한다.** 오타, 설정값, 문구처럼 한두 줄이고 되돌리기 쉬운 변경은 매칭하지 않는다. 직접 고치고, 바뀐 결과를 실제로 확인하고(**Prove It Works**는 그대로다), 사용자가 요청할 때만 커밋이나 PR로 간다. 고치다가 원인 조사나 설계 판단이 필요해지면 그때 Bug fix나 Feature로 매칭한다.
 
